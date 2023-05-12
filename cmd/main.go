@@ -35,7 +35,7 @@ var (
 func main() {
 	app := &cli.App{
 		Name:   "toJson",
-		Usage:  "将特定的 xlsx 文件转换为 json 文件",
+		Usage:  "将策划放置的游戏配置文件，同步到程序所在的仓库",
 		Action: DoWork,
 		Flags: []cli.Flag{
 			//&cli.StringFlag{
