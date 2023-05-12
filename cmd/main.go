@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/suhanyujie/syncGameConfig/pkg/filex"
 	"github.com/suhanyujie/syncGameConfig/pkg/jsonx"
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -25,16 +27,75 @@ var (
 	}
 )
 
+var (
+	// default value
+	convertProName = ""
+)
+
 func main() {
-	syncOnePro("rainbow")
+	app := &cli.App{
+		Name:   "toJson",
+		Usage:  "将特定的 xlsx 文件转换为 json 文件",
+		Action: DoWork,
+		Flags: []cli.Flag{
+			//&cli.StringFlag{
+			//	Name:        "input",
+			//	Value:       "./",
+			//	Aliases:     []string{"i"},
+			//	Usage:       "要转换的文件所在路径",
+			//	Destination: &input,
+			//},
+			//&cli.StringFlag{
+			//	Name:        "output",
+			//	Value:       "./output",
+			//	Aliases:     []string{"o"},
+			//	Usage:       "转换成 json 存放的路径",
+			//	Destination: &output,
+			//},
+			&cli.StringFlag{
+				Name:        "project",
+				Value:       "",
+				Aliases:     []string{"p"},
+				Usage:       "要同步的项目名，eg: throw, farm, rainbow",
+				Destination: &convertProName,
+			},
+		},
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func syncOnePro(proName string) {
-	dirMap1 := AllDirMap["rainbow"]
+func DoWork(ctx *cli.Context) error {
+	params := ctx.Args().Slice()
+	if len(params) != 1 {
+		return errors.New("请输入要同步的项目名。eg: throw, farm, rainbow")
+	} else {
+		if convertProName != ctx.Args().Get(0) {
+			convertProName = ctx.Args().Get(0)
+		}
+
+		if err := syncOnePro(convertProName); err != nil {
+			log.Printf("[DoWork] err: %v", err)
+			return err
+		}
+	}
+	fmt.Printf("[ok] 同步完成...\n")
+	return nil
+
+}
+
+func syncOnePro(proName string) error {
+	dirMap1, ok := AllDirMap[proName]
+	if !ok {
+		return errors.New("没有配置该项目的目录。")
+	}
 	for srcDir, dstDir := range dirMap1 {
 		syncGameConfig(srcDir, dstDir)
 		break
 	}
+	return nil
 }
 
 func syncGameConfig(srcDir string, targetDir string) {
