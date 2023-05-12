@@ -47,8 +47,6 @@ func syncGameConfig(srcDir string, targetDir string) {
 	for _, file := range files {
 		targetFile := path.Join(targetDir, file.Name())
 		// 读取文件
-		// 格式化
-		// 输入到目标目录 todo
 		fromFile := path.Join(srcDir, file.Name())
 		_, err := os.Stat(fromFile)
 		if err != nil {
@@ -72,32 +70,19 @@ func syncGameConfig(srcDir string, targetDir string) {
 		if fromCont == "" {
 			continue
 		}
-		targetFs, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR, 0666)
+		// 格式化
+		resStr := jsonx.JsonStrFormat(fromCont)
+		// fmt.Printf("res: %v\n", resStr)
+		if len(resStr) == 0 {
+			continue
+		}
+		// 写入到目标目录
+		targetFs, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
 		if err != nil {
 			log.Printf("[syncGameConfig] OpenFile err: %v", err)
 			continue
 		}
-		targetFs.WriteString(jsonx.JsonStrFormat(fromCont))
+		targetFs.WriteString(resStr)
 		targetFs.Close()
-
-		//fromFs, err := os.OpenFile(fromFile, os.O_CREATE|os.O_RDWR, 0666)
-		//if err != nil {
-		//	log.Printf("[ConvertOneFile] OpenFile err: %v", err)
-		//	continue
-		//}
-		//fromFs.Close()
-
-		//targetFs, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR, 0666)
-		//if err != nil {
-		//	log.Printf("[ConvertOneFile] OpenFile err: %v", err)
-		//	continue
-		//}
-		//targetFs.Close()
-
-		//_, err = io.Copy(targetFs, fromFs)
-		//if err != nil {
-		//	log.Printf("io.Copy err: %v", err)
-		//	continue
-		//}
 	}
 }
