@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/suhanyujie/syncGameConfig/pkg/filex"
 	"github.com/suhanyujie/syncGameConfig/pkg/jsonx"
@@ -30,6 +31,10 @@ var (
 var (
 	// default value
 	convertProName = ""
+)
+
+const (
+	UTF8_BOM = "\uFEFF"
 )
 
 func main() {
@@ -130,6 +135,9 @@ func syncGameConfig(srcDir string, targetDir string) {
 		fromCont := filex.ReadFile(fromFile)
 		if fromCont == "" {
 			continue
+		}
+		if strings.HasPrefix(fromCont, UTF8_BOM) {
+			fromCont, _ = strings.CutPrefix(fromCont, UTF8_BOM)
 		}
 		// 格式化
 		resStr := jsonx.JsonStrFormat(fromCont)
