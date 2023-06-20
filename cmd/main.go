@@ -25,6 +25,9 @@ var (
 		"rainbow": {
 			"D:\\tech\\repo2Company\\other\\word\\config\\paoku": "D:\\tech\\repo2Company\\golang\\rainbow-bridge\\config\\gameConfig",
 		},
+		"fish": {
+			"D:\\tech\\repo2Company\\other\\word\\config\\buyu": "D:\\tech\\repo2Company\\golang\\fishcode\\config\\gameConfig",
+		},
 	}
 )
 
