@@ -17,16 +17,16 @@ import (
 var (
 	AllDirMap = map[string]map[string]string{
 		"throw": {
-			"D:\\tech\\repo2Company\\other\\word\\config\\wrestle": "D:\\tech\\repo2Company\\golang\\throw_gun\\gameConfig",
+			"D:\\repo2\\other\\word\\config\\wrestle": "D:\\repo2\\go\\throw_gun\\gameConfig",
 		},
 		"farm": {
-			"D:\\tech\\repo2Company\\other\\word\\config\\farm": "D:\\tech\\repo2Company\\golang\\farm_go\\config\\gameConfig",
+			"D:\\repo2\\other\\word\\config\\farm": "D:\\repo2\\go\\farm_go\\config\\gameConfig",
 		},
 		"rainbow": {
-			"D:\\tech\\repo2Company\\other\\word\\config\\paoku": "D:\\tech\\repo2Company\\golang\\rainbow-bridge\\config\\gameConfig",
+			"D:\\repo2\\other\\word\\config\\paoku": "D:\\repo2\\go\\rainbow-bridge\\config\\gameConfig",
 		},
 		"fish": {
-			"D:\\tech\\repo2Company\\other\\word\\config\\buyu": "D:\\tech\\repo2Company\\golang\\fishcode\\config\\gameConfig",
+			"D:\\repo2\\other\\word\\config\\buyu": "D:\\repo2\\go\\fishcode\\config\\gameConfig",
 		},
 	}
 )
@@ -46,20 +46,6 @@ func main() {
 		Usage:  "将策划放置的游戏配置文件，同步到程序所在的仓库",
 		Action: DoWork,
 		Flags: []cli.Flag{
-			//&cli.StringFlag{
-			//	Name:        "input",
-			//	Value:       "./",
-			//	Aliases:     []string{"i"},
-			//	Usage:       "要转换的文件所在路径",
-			//	Destination: &input,
-			//},
-			//&cli.StringFlag{
-			//	Name:        "output",
-			//	Value:       "./output",
-			//	Aliases:     []string{"o"},
-			//	Usage:       "转换成 json 存放的路径",
-			//	Destination: &output,
-			//},
 			&cli.StringFlag{
 				Name:        "project",
 				Value:       "",
